@@ -1,8 +1,22 @@
 import java.awt.Image
 import java.awt.image.BufferedImage
 import java.io.File
+import java.io.IOException
 import java.lang.Exception
 import javax.imageio.ImageIO
+
+@Throws(IOException::class)
+fun BufferedImage.resizeToSquare(newHeight: Int, newWidth: Int): BufferedImage {
+    val tmp = this.getScaledInstance(newWidth, newHeight, Image.SCALE_DEFAULT)
+    val type = this?.type ?: BufferedImage.TYPE_INT_ARGB
+    val scaledImage = BufferedImage(newWidth, newHeight, type)
+
+    val graphics = scaledImage.createGraphics()
+    graphics.drawImage(tmp, 0, 0, null)
+    graphics.dispose()
+
+    return scaledImage
+}
 
 @Throws(Exception::class)
 fun main() {
@@ -10,16 +24,10 @@ fun main() {
     val image = ImageIO.read(input)
     println("Image type: ${image.type}")
 
-    val newHeight = 500
-    val newWidth = 500
+    println("Enter new width and height: ")
+    val newDimension = readLine()!!.toInt()
 
-    val tmp = image.getScaledInstance(newWidth, newHeight, Image.SCALE_DEFAULT)
-    val type = image?.type ?: BufferedImage.TYPE_INT_ARGB
-    val scaledImage = BufferedImage(newWidth, newHeight, type)
-
-    val graphics = scaledImage.createGraphics()
-    graphics.drawImage(tmp, 0, 0, null)
-    graphics.dispose()
+    val scaledImage = image.resizeToSquare(newDimension, newDimension)
 
     val output = File("/Users/jaime/Downloads/flowerOutput.jpg")
     if (output.createNewFile()) {
