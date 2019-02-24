@@ -8,8 +8,7 @@ import javax.imageio.ImageIO
 @Throws(IOException::class)
 fun BufferedImage.resizeToSquare(newHeight: Int, newWidth: Int): BufferedImage {
     val tmp = this.getScaledInstance(newWidth, newHeight, Image.SCALE_DEFAULT)
-    val type = this?.type ?: BufferedImage.TYPE_INT_ARGB
-    val scaledImage = BufferedImage(newWidth, newHeight, type)
+    val scaledImage = BufferedImage(newWidth, newHeight, this.type)
 
     val graphics = scaledImage.createGraphics()
     graphics.drawImage(tmp, 0, 0, null)
