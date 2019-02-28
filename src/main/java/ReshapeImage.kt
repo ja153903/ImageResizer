@@ -21,7 +21,7 @@ fun BufferedImage.resizeToSquare(newDim: Int): BufferedImage {
 fun BufferedImage.writeImageToPath(formatName: String, outputPath: String) {
     val outputFile = File(outputPath)
     if (outputFile.createNewFile()) {
-        println("File was created")
+        println("This is a new file. So file was created")
     } else {
         println("File already exists. So we will overwrite it")
     }
