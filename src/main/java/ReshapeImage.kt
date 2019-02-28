@@ -43,7 +43,6 @@ fun main() {
     val newDimension = readLine()!!.toInt()
 
     val scaledImage = image.resizeToSquare(newDimension)
-    val outputPath = "${input.absolutePath
-        .substring(0, input.absolutePath.lastIndexOf('.'))}_result.${input.extension}"
+    val outputPath = "${input.parent}/${input.nameWithoutExtension}_result.${input.extension}"
     scaledImage.writeImageToPath(input.extension, outputPath)
 }
