@@ -23,7 +23,7 @@ fun BufferedImage.writeImageToPath(formatName: String, outputPath: String) {
     if (outputFile.createNewFile()) {
         println("File was created")
     } else {
-        println("File already exists")
+        println("File already exists. So we will overwrite it")
     }
 
     ImageIO.write(this, formatName, outputFile)
@@ -43,8 +43,7 @@ fun main() {
     val newDimension = readLine()!!.toInt()
 
     val scaledImage = image.resizeToSquare(newDimension)
-
-    println("Enter absolute path for output image: ")
-    val outputPath = readLine() ?: throw Exception("Invalid entry")
-    scaledImage.writeImageToPath("jpg", outputPath)
+    val outputPath = "${input.absolutePath
+        .substring(0, input.absolutePath.lastIndexOf('.'))}_result.${input.extension}"
+    scaledImage.writeImageToPath(input.extension, outputPath)
 }
