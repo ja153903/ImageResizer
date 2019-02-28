@@ -6,9 +6,9 @@ import java.lang.Exception
 import javax.imageio.ImageIO
 
 @Throws(IOException::class)
-fun BufferedImage.resizeToSquare(newHeight: Int, newWidth: Int): BufferedImage {
-    val tmp = this.getScaledInstance(newWidth, newHeight, Image.SCALE_DEFAULT)
-    val scaledImage = BufferedImage(newWidth, newHeight, this.type)
+fun BufferedImage.resizeToSquare(newDim: Int): BufferedImage {
+    val tmp = this.getScaledInstance(newDim, newDim, Image.SCALE_DEFAULT)
+    val scaledImage = BufferedImage(newDim, newDim, this.type)
 
     val graphics = scaledImage.createGraphics()
     graphics.drawImage(tmp, 0, 0, null)
@@ -17,22 +17,34 @@ fun BufferedImage.resizeToSquare(newHeight: Int, newWidth: Int): BufferedImage {
     return scaledImage
 }
 
+@Throws(IOException::class)
+fun BufferedImage.writeImageToPath(formatName: String, outputPath: String) {
+    val outputFile = File(outputPath)
+    if (outputFile.createNewFile()) {
+        println("File was created")
+    } else {
+        println("File already exists")
+    }
+
+    ImageIO.write(this, formatName, outputFile)
+}
+
 @Throws(Exception::class)
 fun main() {
-    val input = File("/Users/jaime/Downloads/beauty-bloom-blue-67636.jpg")
+    println("Enter absolute path for image: ")
+    val absolutePath = readLine()
+    val input = File(absolutePath)
+    if (!input.exists()) throw Exception("File doesn't exist")
+
     val image = ImageIO.read(input)
     println("Image type: ${image.type}")
 
     println("Enter new width and height: ")
     val newDimension = readLine()!!.toInt()
 
-    val scaledImage = image.resizeToSquare(newDimension, newDimension)
+    val scaledImage = image.resizeToSquare(newDimension)
 
-    val output = File("/Users/jaime/Downloads/flowerOutput.jpg")
-    if (output.createNewFile()) {
-        println("File created")
-    } else {
-        println("File already exists")
-    }
-    ImageIO.write(scaledImage, "jpg", output)
+    println("Enter absolute path for output image: ")
+    val outputPath = readLine() ?: throw Exception("Invalid entry")
+    scaledImage.writeImageToPath("jpg", outputPath)
 }
